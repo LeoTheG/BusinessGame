@@ -1,7 +1,9 @@
 package my.game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class Business {
     private String name;
@@ -14,6 +16,7 @@ public class Business {
     private int y;
     private int multipler;
     private ImageButton imageButton;
+    private Player player;
 
     public String getName() {
         return name;
@@ -82,8 +85,17 @@ public class Business {
     public void buy(int amt){
         this.quantity += amt;
     }
+    public void init(){
+        imageButton.addListener( new ClickListener() {
+			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				buy(1);
+				player.decMoney(cost);
+				return true;
+			}
+		});
+    }
 
-    public Business(String name, int cost, Texture img, int quantity, int payout, int x, int y, int multiplier, ImageButton imageButton){
+    public Business(String name, int cost, Texture img, int quantity, int payout, int x, int y, int multiplier, ImageButton imageButton, Player player){
         this.name = name;
         this.cost = cost;
         this.img = img;
@@ -93,6 +105,10 @@ public class Business {
         this.y = y;
         this.multipler = multiplier;
         this.imageButton = imageButton;
+        this.player = player;
+
+        init();
+
     }
 
 }

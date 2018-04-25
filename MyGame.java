@@ -27,16 +27,18 @@ public class MyGame extends ApplicationAdapter {
 	ImageButton imageButton;
 	Business biz;
 	Skin skin;
+	Player player;
 
 	@Override
 	public void create () {
+		player = new Player();
 		batch = new SpriteBatch();
 		//Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 		img = new Texture("box.jpg");
 		bitmapFont = new BitmapFont();
 		Drawable drawable = new TextureRegionDrawable(new TextureRegion(img));
 		imageButton = new ImageButton(drawable);
-		biz = new Business("Lemonade Stand",5,img,1,1,0,0,5,imageButton);
+		biz = new Business("Lemonade Stand",5,img,1,1,0,0,5,imageButton,player);
 
 
 		//--------
@@ -55,19 +57,8 @@ public class MyGame extends ApplicationAdapter {
 		textButtonStyle.font = bitmapFont;
 		textButtonStyle.fontColor = Color.BLACK;
 		TextButton button1 = new TextButton("This is a button!!!", textButtonStyle);
-		//table.add(button1);
-		//table.add(imageButton).width((int)(imageButton.getWidth() * 0.5));
 		table.add(imageButton).width((int)(imageButton.getWidth() * 0.5)).height((int)(imageButton.getHeight() * 0.5));
-		//table.add(imageButton).height((int)(imageButton.getHeight() * 0.5));
-		//table.row();
 		stage.addActor(table);
-		// ----------
-		imageButton.addListener( new ClickListener() {
-			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				biz.buy(1);
-				return true;
-			}
-		});
 	}
 
 	@Override
@@ -79,14 +70,8 @@ public class MyGame extends ApplicationAdapter {
 		stage.draw();
 		batch.begin();
 		bitmapFont.draw(batch,""+biz.getQuantity(),Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
-		bitmapFont.draw(batch,""+biz.getQuantity(),Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
-		/*
-		batch.draw(img, Gdx.graphics.getWidth()/2 - img.getWidth()/4, Gdx.graphics.getHeight()/6-img.getHeight()/4, img.getWidth()/2, img.getHeight()/2);
-		batch.draw(img, Gdx.graphics.getWidth()/2 - img.getWidth()/4, Gdx.graphics.getHeight()/6-img.getHeight()/4 + 200, img.getWidth()/2, img.getHeight()/2);
-		batch.draw(img, Gdx.graphics.getWidth()/2 - img.getWidth()/4, Gdx.graphics.getHeight()/6-img.getHeight()/4 + 400, img.getWidth()/2, img.getHeight()/2);
-		batch.draw(img, Gdx.graphics.getWidth()/2 - img.getWidth()/4, Gdx.graphics.getHeight()/6-img.getHeight()/4 + 600, img.getWidth()/2, img.getHeight()/2);
-		*/
-		//bitmapFont.draw(batch, "$10",Gdx.graphics.getWidth()/2 - img.getWidth()/4 + 45,Gdx.graphics.getHeight()/6-img.getHeight()/4 + 25);
+		bitmapFont.draw(batch,""+player.getMoney(),Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight());
+
 		batch.end();
 	}
 	
