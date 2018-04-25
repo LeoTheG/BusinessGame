@@ -1,6 +1,7 @@
 package my.game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 
 public class Business {
     private String name;
@@ -12,6 +13,7 @@ public class Business {
     private int x;
     private int y;
     private int multipler;
+    private ImageButton imageButton;
 
     public String getName() {
         return name;
@@ -77,7 +79,11 @@ public class Business {
         this.multipler = multipler;
     }
 
-    public Business(String name, int cost, Texture img, int quantity, int payout, int x, int y, int multiplier){
+    public void buy(int amt){
+        this.quantity += amt;
+    }
+
+    public Business(String name, int cost, Texture img, int quantity, int payout, int x, int y, int multiplier, ImageButton imageButton){
         this.name = name;
         this.cost = cost;
         this.img = img;
@@ -86,6 +92,7 @@ public class Business {
         this.x = x;
         this.y = y;
         this.multipler = multiplier;
+        this.imageButton = imageButton;
     }
 
 }
