@@ -1,18 +1,23 @@
 package my.game;
 
 public class Player {
-    private int money;
+    private long money;
+    public static int OFFSET_Y = -10;
 
     public Player(){
-        this.money = 0;
+        this.money = 100000L;
     }
-    public int getMoney(){
+    public long getMoney(){
         return this.money;
     }
-    public void incMoney(int amt){
+    public void incMoney(long amt){
         this.money += amt;
     }
-    public void decMoney(int amt){
-        this.money -= amt;
+    public boolean decMoney(long amt){
+        if (amt <= this.money ) {
+            this.money -= amt;
+            return true;
+        }
+        else return false;
     }
 }

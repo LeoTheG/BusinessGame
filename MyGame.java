@@ -29,34 +29,29 @@ public class MyGame extends ApplicationAdapter {
 	Skin skin;
 	Player player;
 
+	int textOffset;
+
 	@Override
 	public void create () {
 		player = new Player();
 		batch = new SpriteBatch();
-		//Skin skin = new Skin(Gdx.files.internal("uiskin.json"));
 		img = new Texture("box.jpg");
+		textOffset = 10;
 		bitmapFont = new BitmapFont();
+		bitmapFont.setColor(Color.BLACK);
 		Drawable drawable = new TextureRegionDrawable(new TextureRegion(img));
 		imageButton = new ImageButton(drawable);
 		biz = new Business("Lemonade Stand",5,img,1,1,0,0,5,imageButton,player);
 
 
-		//--------
-		//stage = new Stage(new ExtendViewport(800, 840));
 		stage = new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(stage);
 
 		Table table = new Table();
-		//table.setSkin(skin);
 		table.setFillParent(true); //fills the screen
 		table.align(Align.top | Align.center);
 		table.center().center();
 
-
-		TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-		textButtonStyle.font = bitmapFont;
-		textButtonStyle.fontColor = Color.BLACK;
-		TextButton button1 = new TextButton("This is a button!!!", textButtonStyle);
 		table.add(imageButton).width((int)(imageButton.getWidth() * 0.5)).height((int)(imageButton.getHeight() * 0.5));
 		stage.addActor(table);
 	}
@@ -66,11 +61,18 @@ public class MyGame extends ApplicationAdapter {
 
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		biz.timeCheck();
 		stage.act();
 		stage.draw();
 		batch.begin();
+
+		// drawing text on screen
 		bitmapFont.draw(batch,""+biz.getQuantity(),Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
-		bitmapFont.draw(batch,""+player.getMoney(),Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight());
+		bitmapFont.draw(batch,"$"+biz.display(player.getMoney()),Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight() + player.OFFSET_Y);
+		//bitmapFont.draw(batch,""+biz.getTime(),Gdx.graphics.getWidth()/2 + biz.TIMER_OFFSET_X,Gdx.graphics.getHeight()/2 + biz.TIMER_OFFSET_Y);
+		bitmapFont.draw(batch,biz.getTime()+"%",Gdx.graphics.getWidth()/2 + biz.TIMER_OFFSET_X,Gdx.graphics.getHeight()/2);
+		bitmapFont.draw(batch,"Cost: $"+biz.display(biz.getCost()),Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2 + biz.TIMER_OFFSET_Y);
+		bitmapFont.draw(batch,"Payout: $"+biz.display(biz.getPayout()),Gdx.graphics.getWidth()/2 + biz.OFFSET_X_PAYOUT,Gdx.graphics.getHeight()/2);
 
 		batch.end();
 	}
