@@ -1,4 +1,4 @@
-package my.game;
+package my.mygdx.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;

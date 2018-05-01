@@ -1,4 +1,4 @@
-package my.game;
+package my.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -25,7 +26,9 @@ public class MyGame extends ApplicationAdapter {
 	TextButton button;
 	Stage stage;
 	ImageButton imageButton;
+	ImageButton imageButton2;
 	Business biz;
+	Business biz2;
 	Skin skin;
 	Player player;
 
@@ -34,14 +37,20 @@ public class MyGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		player = new Player();
+		// drawing images
 		batch = new SpriteBatch();
 		img = new Texture("box.jpg");
 		textOffset = 10;
+		// draws text to screen
 		bitmapFont = new BitmapFont();
 		bitmapFont.setColor(Color.BLACK);
+
 		Drawable drawable = new TextureRegionDrawable(new TextureRegion(img));
 		imageButton = new ImageButton(drawable);
+		imageButton2 = new ImageButton(drawable);
+
 		biz = new Business("Lemonade Stand",5,img,1,1,0,0,5,imageButton,player);
+		biz2 = new Business("Icecream Truck",1000,img,0,50,0,0,5,imageButton2,player);
 
 
 		stage = new Stage(new ScreenViewport());
@@ -49,10 +58,12 @@ public class MyGame extends ApplicationAdapter {
 
 		Table table = new Table();
 		table.setFillParent(true); //fills the screen
-		table.align(Align.top | Align.center);
-		table.center().center();
+		//table.align(align.top | align.center);
+		//table.center().center();
 
 		table.add(imageButton).width((int)(imageButton.getWidth() * 0.5)).height((int)(imageButton.getHeight() * 0.5));
+		table.row();
+		table.add(imageButton2).width((int)(imageButton.getWidth() * 0.5)).height((int)(imageButton.getHeight() * 0.5)).top();
 		stage.addActor(table);
 	}
 
@@ -67,13 +78,17 @@ public class MyGame extends ApplicationAdapter {
 		batch.begin();
 
 		// drawing text on screen
-		bitmapFont.draw(batch,""+biz.getQuantity(),Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
 		bitmapFont.draw(batch,"$"+biz.display(player.getMoney()),Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight() + player.OFFSET_Y);
-		//bitmapFont.draw(batch,""+biz.getTime(),Gdx.graphics.getWidth()/2 + biz.TIMER_OFFSET_X,Gdx.graphics.getHeight()/2 + biz.TIMER_OFFSET_Y);
 		bitmapFont.draw(batch,biz.getTime()+"%",Gdx.graphics.getWidth()/2 + biz.TIMER_OFFSET_X,Gdx.graphics.getHeight()/2);
 		bitmapFont.draw(batch,"Cost: $"+biz.display(biz.getCost()),Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2 + biz.TIMER_OFFSET_Y);
 		bitmapFont.draw(batch,"Payout: $"+biz.display(biz.getPayout()),Gdx.graphics.getWidth()/2 + biz.OFFSET_X_PAYOUT,Gdx.graphics.getHeight()/2);
-
+		/*
+		bitmapFont.draw(batch,""+biz.getQuantity(),Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
+		bitmapFont.draw(batch,"$"+biz.display(player.getMoney()),Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight() + player.OFFSET_Y);
+		bitmapFont.draw(batch,biz.getTime()+"%",Gdx.graphics.getWidth()/2 + biz.TIMER_OFFSET_X,Gdx.graphics.getHeight()/2);
+		bitmapFont.draw(batch,"Cost: $"+biz.display(biz.getCost()),Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2 + biz.TIMER_OFFSET_Y);
+		bitmapFont.draw(batch,"Payout: $"+biz.display(biz.getPayout()),Gdx.graphics.getWidth()/2 + biz.OFFSET_X_PAYOUT,Gdx.graphics.getHeight()/2);
+		*/
 		batch.end();
 	}
 	
