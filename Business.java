@@ -1,6 +1,7 @@
-package my.mygdx.game;
+package my.game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -29,10 +30,18 @@ public class Business {
     public static int OFFSET_X_PAYOUT = 50;
     public int timerTime = 10;
 
+    private ProgressBar progressBar;
 
     static final long MILLION = 1000000L;
     static final long BILLION = 1000000000L;
     static final long TRILLION = 1000000000000L;
+
+    public ImageButton getProgressBarButton(){
+        return progressBar.getBarButton();
+    }
+    public int getProgressBarMaxWidth(){
+        return progressBar.getMaxWidth();
+    }
 
     public String getName() {
         return name;
@@ -142,23 +151,37 @@ public class Business {
         imageButton.addListener( new ClickListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 			    // check for negative player money
-			    if (player.decMoney(cost))
+                if (player.decMoney(cost) && getTime()>=100) {
                     buy(1);
+                    time.time = 0;
+                }
+				return true;
+			}
+		});
+        progressBar = new ProgressBar();
+        getProgressBarButton().addListener( new ClickListener() {
+			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+			    // check for negative player money
+			    if (player.decMoney(cost) && getTime()>=100) {
+                    buy(1);
+                    time.time = 0;
+                }
 				return true;
 			}
 		});
         time = new Time();
         timer = new Timer();
         timer.schedule(new Helper(time), 0, timerTime*=RATE_TIMER);
+
     }
     // constantly called in render loop to check for payout
     public void timeCheck(){
         if (this.time.time  >= 100){
-            time.time = 0;
-            player.incMoney(payout);
+            time.time = 100;
+            //player.incMoney(payout);
         }
     }
-
+    // constructor
     public Business(String name, int cost, Texture img, int quantity, int payout, int x, int y, int multiplier, ImageButton imageButton, Player player){
         this.name = name;
         this.cost = cost;
@@ -187,10 +210,16 @@ class Time {
 }
 class Helper extends TimerTask{
     private Time time;
+    private boolean check = false;
     public Helper(Time time){
         this.time = time;
     }
-    public void run(){
-       time.increment();
+    public void run()
+    {
+        if(!check){
+            time.increment();
+            check = true;
+        }
+        else check=false;
     }
 }

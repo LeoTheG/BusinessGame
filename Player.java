@@ -1,4 +1,4 @@
-package my.mygdx.game;
+package my.game;
 
 public class Player {
     private long money;

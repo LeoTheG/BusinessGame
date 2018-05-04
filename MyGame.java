@@ -1,4 +1,4 @@
-package my.mygdx.game;
+package my.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -21,16 +21,14 @@ public class MyGame extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
 	BitmapFont bitmapFont;
-	Skin buttonSkin;
-	TextureAtlas atlas;
-	TextButton button;
 	Stage stage;
 	ImageButton imageButton;
 	ImageButton imageButton2;
 	Business biz;
 	Business biz2;
-	Skin skin;
 	Player player;
+	float progressBarScale = 0.0f;
+	int padding = 100;
 
 	int textOffset;
 
@@ -58,13 +56,14 @@ public class MyGame extends ApplicationAdapter {
 
 		Table table = new Table();
 		table.setFillParent(true); //fills the screen
-		//table.align(align.top | align.center);
-		//table.center().center();
 
-		table.add(imageButton).width((int)(imageButton.getWidth() * 0.5)).height((int)(imageButton.getHeight() * 0.5));
+		table.add(biz.getProgressBarButton());
 		table.row();
-		table.add(imageButton2).width((int)(imageButton.getWidth() * 0.5)).height((int)(imageButton.getHeight() * 0.5)).top();
+		table.add(imageButton);
+		table.row();
+		table.add(imageButton2).spaceTop(padding);
 		stage.addActor(table);
+		biz.getProgressBarButton().setTransform(true);
 	}
 
 	@Override
@@ -75,20 +74,11 @@ public class MyGame extends ApplicationAdapter {
 		biz.timeCheck();
 		stage.act();
 		stage.draw();
+		progressBarScale = biz.getTime()/100f;
+		biz.getProgressBarButton().setScale(progressBarScale,1);
 		batch.begin();
 
 		// drawing text on screen
-		bitmapFont.draw(batch,"$"+biz.display(player.getMoney()),Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight() + player.OFFSET_Y);
-		bitmapFont.draw(batch,biz.getTime()+"%",Gdx.graphics.getWidth()/2 + biz.TIMER_OFFSET_X,Gdx.graphics.getHeight()/2);
-		bitmapFont.draw(batch,"Cost: $"+biz.display(biz.getCost()),Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2 + biz.TIMER_OFFSET_Y);
-		bitmapFont.draw(batch,"Payout: $"+biz.display(biz.getPayout()),Gdx.graphics.getWidth()/2 + biz.OFFSET_X_PAYOUT,Gdx.graphics.getHeight()/2);
-		/*
-		bitmapFont.draw(batch,""+biz.getQuantity(),Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2);
-		bitmapFont.draw(batch,"$"+biz.display(player.getMoney()),Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight() + player.OFFSET_Y);
-		bitmapFont.draw(batch,biz.getTime()+"%",Gdx.graphics.getWidth()/2 + biz.TIMER_OFFSET_X,Gdx.graphics.getHeight()/2);
-		bitmapFont.draw(batch,"Cost: $"+biz.display(biz.getCost()),Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2 + biz.TIMER_OFFSET_Y);
-		bitmapFont.draw(batch,"Payout: $"+biz.display(biz.getPayout()),Gdx.graphics.getWidth()/2 + biz.OFFSET_X_PAYOUT,Gdx.graphics.getHeight()/2);
-		*/
 		batch.end();
 	}
 	
@@ -97,4 +87,5 @@ public class MyGame extends ApplicationAdapter {
 		batch.dispose();
 		img.dispose();
 	}
+
 }
