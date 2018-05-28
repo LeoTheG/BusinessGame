@@ -61,9 +61,12 @@ public class MyGame extends ApplicationAdapter {
 		table.row();
 		table.add(imageButton);
 		table.row();
-		table.add(imageButton2).spaceTop(padding);
+		table.add(biz2.getProgressBarButton()).spaceTop(10);
+		table.row();
+		table.add(imageButton2);
 		stage.addActor(table);
 		biz.getProgressBarButton().setTransform(true);
+		biz2.getProgressBarButton().setTransform(true);
 	}
 
 	@Override
@@ -72,10 +75,12 @@ public class MyGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		biz.timeCheck();
+		biz2.timeCheck();
 		stage.act();
 		stage.draw();
-		progressBarScale = biz.getTime()/100f;
-		biz.getProgressBarButton().setScale(progressBarScale,1);
+		biz.getProgressBarButton().setScale(biz.getTime()/100f,1);
+		System.out.println("biz2 time = "+biz2.getTime()/100f);
+		biz2.getProgressBarButton().setScale(biz2.getTime()/100f,1);
 		batch.begin();
 
 		// drawing text on screen

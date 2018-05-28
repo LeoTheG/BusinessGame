@@ -152,8 +152,10 @@ public class Business {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 			    // check for negative player money
                 if (player.decMoney(cost) && getTime()>=100) {
+                    System.out.println("Touched button normal: " + name);
                     buy(1);
                     time.time = 0;
+                    System.out.println("time="+time.time);
                 }
 				return true;
 			}
@@ -161,6 +163,7 @@ public class Business {
         progressBar = new ProgressBar();
         getProgressBarButton().addListener( new ClickListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+			    System.out.println("Touched button progress: " + name);
 			    // check for negative player money
 			    if (player.decMoney(cost) && getTime()>=100) {
                     buy(1);
