@@ -1,9 +1,11 @@
 package my.game;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.util.Timer;
@@ -152,10 +154,8 @@ public class Business {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 			    // check for negative player money
                 if (player.decMoney(cost) && getTime()>=100) {
-                    System.out.println("Touched button normal: " + name);
                     buy(1);
                     time.time = 0;
-                    System.out.println("time="+time.time);
                 }
 				return true;
 			}
@@ -163,7 +163,6 @@ public class Business {
         progressBar = new ProgressBar();
         getProgressBarButton().addListener( new ClickListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-			    System.out.println("Touched button progress: " + name);
 			    // check for negative player money
 			    if (player.decMoney(cost) && getTime()>=100) {
                     buy(1);
@@ -176,6 +175,9 @@ public class Business {
         timer = new Timer();
         timer.schedule(new Helper(time), 0, timerTime*=RATE_TIMER);
 
+    }
+    public Vector2 getAbsCoords(){
+        return imageButton.localToStageCoordinates(new Vector2(0,0));
     }
     // constantly called in render loop to check for payout
     public void timeCheck(){

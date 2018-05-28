@@ -31,6 +31,7 @@ public class MyGame extends ApplicationAdapter {
 	int padding = 100;
 
 	int textOffset;
+	static int PADDING_Y_BUSINESS_NAME = 10;
 
 	@Override
 	public void create () {
@@ -79,10 +80,9 @@ public class MyGame extends ApplicationAdapter {
 		stage.act();
 		stage.draw();
 		biz.getProgressBarButton().setScale(biz.getTime()/100f,1);
-		System.out.println("biz2 time = "+biz2.getTime()/100f);
 		biz2.getProgressBarButton().setScale(biz2.getTime()/100f,1);
 		batch.begin();
-
+		bitmapFont.draw(batch,biz.getName(),biz.getAbsCoords().x,biz.getAbsCoords().y+PADDING_Y_BUSINESS_NAME);
 		// drawing text on screen
 		batch.end();
 	}
