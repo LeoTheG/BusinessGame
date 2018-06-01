@@ -22,13 +22,10 @@ public class MyGame extends ApplicationAdapter {
 	Texture img;
 	BitmapFont bitmapFont;
 	Stage stage;
-	ImageButton imageButton;
-	ImageButton imageButton2;
 	Business biz;
 	Business biz2;
+	Business biz3;
 	Player player;
-	float progressBarScale = 0.0f;
-	int padding = 100;
 
 	int textOffset;
 	static int PADDING_Y_BUSINESS_NAME = 10;
@@ -44,12 +41,9 @@ public class MyGame extends ApplicationAdapter {
 		bitmapFont = new BitmapFont();
 		bitmapFont.setColor(Color.BLACK);
 
-		Drawable drawable = new TextureRegionDrawable(new TextureRegion(img));
-		imageButton = new ImageButton(drawable);
-		imageButton2 = new ImageButton(drawable);
-
-		biz = new Business("Lemonade Stand",5,img,1,1,0,0,5,imageButton,player);
-		biz2 = new Business("Icecream Truck",1000,img,0,50,0,0,5,imageButton2,player);
+		biz = new Business("Lemonade Stand",5,img,1,1,player,bitmapFont);
+		biz2 = new Business("Icecream Truck",1000,img,0,50,player,bitmapFont);
+		biz3 = new Business("Vape Store",5000,img,0,500,player,bitmapFont);
 
 
 		stage = new Stage(new ScreenViewport());
@@ -60,14 +54,19 @@ public class MyGame extends ApplicationAdapter {
 
 		table.add(biz.getProgressBarButton());
 		table.row();
-		table.add(imageButton);
+		table.add(biz.getImageButton());
 		table.row();
 		table.add(biz2.getProgressBarButton()).spaceTop(10);
 		table.row();
-		table.add(imageButton2);
+		table.add(biz2.getImageButton());
+		table.row();
+		table.add(biz3.getProgressBarButton()).spaceTop(10);
+		table.row();
+		table.add(biz3.getImageButton());
 		stage.addActor(table);
 		biz.getProgressBarButton().setTransform(true);
 		biz2.getProgressBarButton().setTransform(true);
+		biz3.getProgressBarButton().setTransform(true);
 	}
 
 	@Override
@@ -77,13 +76,25 @@ public class MyGame extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		biz.timeCheck();
 		biz2.timeCheck();
+		biz3.timeCheck();
 		stage.act();
 		stage.draw();
 		biz.getProgressBarButton().setScale(biz.getTime()/100f,1);
 		biz2.getProgressBarButton().setScale(biz2.getTime()/100f,1);
+		biz3.getProgressBarButton().setScale(biz3.getTime()/100f,1);
 		batch.begin();
-		bitmapFont.draw(batch,biz.getName(),biz.getAbsCoords().x,biz.getAbsCoords().y+PADDING_Y_BUSINESS_NAME);
-		// drawing text on screen
+
+		for (Business.labels label : Business.labels.values()){
+			bitmapFont.draw(batch,biz.getGlyphLayout(label),biz.properX(label),biz.properY(label));
+		}
+
+		for (Business.labels label : Business.labels.values()){
+			bitmapFont.draw(batch,biz2.getGlyphLayout(label),biz2.properX(label),biz2.properY(label));
+		}
+		for (Business.labels label : Business.labels.values()){
+			bitmapFont.draw(batch,biz3.getGlyphLayout(label),biz3.properX(label),biz3.properY(label));
+		}
+		bitmapFont.draw(batch,"$"+player.getMoney(),player.properX(),player.properY());
 		batch.end();
 	}
 	
